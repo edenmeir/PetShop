@@ -1,0 +1,60 @@
+﻿@model CataloguePageModel
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Home Page</title>
+
+    <style>
+        body {
+            background-color: antiquewhite; /* Set the background color */
+        }
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: lightblue; /* Set background color for odd rows */
+        }
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: lightcoral; /* Set background color for even rows */
+        }
+    </style>
+
+</head>
+<body>
+    <h4 class="h4 text-center">The two most highly rated pets today are: </h4>
+    <br />
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr class="text-center">
+                        <th class="text-center"></th>
+                        <th class="text-center">Name</th>
+                        <th class="text-center">Description</th>
+                        <th class="text-center">Number of comments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var animal in Model.Animals)
+                    {
+                        <tr>
+                            <td class="w-25">
+                            @if (animal.Pictures.Any())
+                            {
+                            <img src="@animal.Pictures.First().PictureSrc" alt="@animal.Name Picture" class="img-fluid img-thumbnail">
+                            }
+                            else
+                            {
+                            <span>No Picture Avilable</span>
+                            }
+                            </td>
+                            <td class="text-center">@animal.Name</td>
+                            <td class="text-center">@animal.Description</td>
+                            <td class="text-center">@animal.Comments.Count().ToString()</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,81 @@
+﻿@model CataloguePageModel
+
+<style>
+    body {
+        background-color: antiquewhite; /* Set the background color */
+    }
+</style>
+
+<div class="container">
+    <div class="row justify-content-md-center">
+    <select name="Category" class="custom-select" id="inputGroupSelect01">
+        <option >---Select a category---</option>
+        @foreach (var category in Model.Categories)
+        {
+            <option value="@category.CategoryId">@category.Name</option>
+        }
+    </select>
+    </div>
+</div>
+<div class="row justify-content-md-center">
+    <table class="table-bordered" id="animalTable">
+        <thead>
+            <tr>
+                <th class="text-center">Portrait</th>
+                <th class="text-center">Name</th>
+                <th class="text-center">Would you like to know more?</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var animal in Model.Animals)
+            {
+                <tr class="animalRow" data-category="@animal.CategoryId">
+                    <td class="w-25">
+                        @if (animal.Pictures.Any())
+                        {
+                            <img src="@animal.Pictures.First().PictureSrc" alt="@animal.Name Picture" class="img-fluid img-thumbnail">
+                        }
+                        else
+                        {
+                            <span>No Picture Avilable</span>
+                        }
+                    </td>
+                    <td class="text-center fs-3">@animal.Name</td>
+                    <td class="text-center">
+                        <a class="btn btn-outline-info"
+                           asp-controller="Catalogue" asp-action="AnimalDetails" asp-route-animalId="@animal.AnimalId" onclick="goToAnimalDetails()">More Information</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var selectElement = document.getElementById('inputGroupSelect01');
+        var rows = document.getElementsByClassName('animalRow');
+
+        selectElement.addEventListener('change', function () {
+            var selectedValue = this.value;
+            var anyRowsToShow = false;
+
+            for (var i = 0; i < rows.length; i++) {
+                var category = rows[i].getAttribute('data-category');
+
+                if (selectedValue === '' || category === selectedValue) {
+                    rows[i].style.display = 'table-row';
+                    anyRowsToShow = true;
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+
+            if (!anyRowsToShow) {
+                window.location.reload();
+            }
+        });
+    });
+</script>
